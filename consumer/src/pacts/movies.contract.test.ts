@@ -10,7 +10,7 @@ const provider = new Pact({
   provider: 'Movie Producer',
   port: PORT,
   log: path.resolve(process.cwd(), 'logs', 'pact.log'),
-  dir: path.resolve(process.cwd(), 'contracts'),
+  dir: path.resolve(process.cwd(), '../', 'contracts'),
   logLevel: 'info',
 });
 
