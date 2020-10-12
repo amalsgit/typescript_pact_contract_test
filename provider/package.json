@@ -10,8 +10,13 @@
   },
   "author": "amal jayaraj",
   "license": "ISC",
-  "devDependencies": {},
+  "devDependencies": {
+    "@types/jest": "^26.0.14",
+    "jest": "^26.5.3",
+    "ts-jest": "^26.4.1"
+  },
   "dependencies": {
+    "@pact-foundation/pact": "^9.12.2",
     "@types/express": "^4.17.8",
     "concurrently": "^5.3.0",
     "express": "^4.17.1",
