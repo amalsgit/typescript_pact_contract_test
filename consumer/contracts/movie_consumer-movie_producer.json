@@ -16,6 +16,30 @@
       "response": {
         "status": 200,
         "headers": {
+        },
+        "body": [
+          {
+            "id": 1,
+            "name": "foo bar",
+            "year": 1989
+          }
+        ],
+        "matchingRules": {
+          "$.body": {
+            "min": 1
+          },
+          "$.body[*].*": {
+            "match": "type"
+          },
+          "$.body[*].id": {
+            "match": "type"
+          },
+          "$.body[*].name": {
+            "match": "type"
+          },
+          "$.body[*].year": {
+            "match": "type"
+          }
         }
       }
     }
