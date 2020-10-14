@@ -5,6 +5,7 @@ import * as movies from '../actions';
 
 const PORT: number = 3001;
 
+// Create the provider instance
 const provider = new Pact({
   consumer: 'Movie Consumer',
   provider: 'Movie Producer',
@@ -17,8 +18,10 @@ const provider = new Pact({
 describe('Movies Service', () => {
   jest.setTimeout(30000);
   beforeAll(async () => {
+    // Bring up provider mock server
     await provider.setup();
 
+    // Define expected provider interaction
     const interaction = new Interaction()
       .given('I have a list of movies')
       .uponReceiving('a request for returning all movies')
@@ -38,13 +41,16 @@ describe('Movies Service', () => {
   });
 
   afterEach(async () => {
+    // Verify the contract
     await provider.verify();
   });
 
   afterAll(async () => {
+    // Create the contract and kill the mock provider
     await provider.finalize();
   });
 
+  // Test the contract
   it('returns 200', async () => {
     await new Promise(r => setTimeout(r, 10000));
     const result = await movies.getMovies();
