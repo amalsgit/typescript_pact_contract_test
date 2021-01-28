@@ -6,7 +6,7 @@
   "scripts": {
     "watch-ts": "tsc -w",
     "watch-node": "nodemon dist/server.js",
-    "start": "concurrently -k -p \"[{name}]\" -n \"TypeScript, Node\" -c \"yello.bold, cyan.bold\" \"yarn run watch-ts\" \"yarn run watch-node\"",
+    "start": "nodemon",
     "test": "jest"
   },
   "author": "amal jayaraj",
@@ -19,9 +19,13 @@
   "dependencies": {
     "@pact-foundation/pact": "^9.12.2",
     "@types/express": "^4.17.8",
-    "concurrently": "^5.3.0",
     "express": "^4.17.1",
-    "nodemon": "^2.0.4",
+    "nock": "^13.0.6",
+    "node-gyp": "^7.1.2",
+    "nodemon": "^2.0.7",
+    "reflect-metadata": "^0.1.13",
+    "sqlite3": "^5.0.1",
+    "typeorm": "^0.2.30",
     "typescript": "^4.0.3"
   }
 }

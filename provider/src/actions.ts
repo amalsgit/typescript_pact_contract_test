@@ -1,13 +1,21 @@
-import { movies } from './data/movies';
+import { getConnection } from 'typeorm';
+import { Movie } from './entity/movies.entity';
+import { TvSeries } from './entity/tvSeries.entity';
 
-export const getMovies = () => {
-  return movies;
+export type movie = { name: string; year: number };
+
+export const getMovies = async () => {
+  return await getConnection().getRepository(Movie).find();
 };
 
-export const getMovieById = (id: string) => {
-  return movies.filter(m => m.id == parseInt(id));
+export const getMovieById = async (id: string) => {
+  return await getConnection().getRepository(Movie).findOne(id);
 };
 
-export const getMovieByName = (name: string) => {
-  return movies.filter(m => m.name == name);
+export const getSeries = async () => {
+  return await getConnection().getRepository(TvSeries).find();
+};
+
+export const addMovie = async (movie: movie) => {
+  await getConnection().getRepository(Movie).save(movie);
 };
