@@ -4,27 +4,46 @@ import { eachLike, like } from '@pact-foundation/pact/dsl/matchers';
 import path from 'path';
 import * as movies from '../actions';
 
-const PORT: number = 3001;
-
 // Define the PACT configs
-const pact = new Pact({
+const provider = new Pact({
   consumer: 'Movie Consumer',
-  provider: 'Movie Producer',
-  port: PORT,
+  provider: 'Movie Provider',
+  port: 3001,
   log: path.resolve(process.cwd(), 'logs', 'pact.log'),
   dir: path.resolve(process.cwd(), '../', 'contracts'),
   logLevel: 'info',
 });
 
-describe('Movies Service', () => {
-  jest.setTimeout(30000);
+describe('Movie Service Provider', () => {
   beforeAll(async () => {
     // Bring up provider mock server
-    await pact.setup();
+    await provider.setup();
+  });
 
+  afterEach(async () => {
+    // Verify the contract
+    await provider.verify();
+  });
+
+  afterAll(async () => {
+    // Create the contract and kill the mock server
+    await provider.finalize();
+
+    // Configs to publish contract to pact broker
+    const opts: PublisherOptions = {
+      pactFilesOrDirs: [path.resolve(process.cwd(), '../', 'contracts')],
+      pactBroker: 'http://localhost:9292/',
+      consumerVersion: '1.0.0',
+      tags: ['development'],
+    };
+    // Publish the contract to broker
+    await new Publisher(opts).publishPacts();
+  });
+
+  it('should return list of movies', async () => {
     // Define expected provider interaction
     const interaction = new Interaction()
-      .given('I have a list of movies')
+      .given('a list of movies')
       .uponReceiving('a request for returning all movies')
       .withRequest({
         method: 'GET',
@@ -38,36 +57,58 @@ describe('Movies Service', () => {
           year: like(1989),
         }),
       });
-    await pact.addInteraction(interaction);
-  });
+    await provider.addInteraction(interaction);
 
-  afterEach(async () => {
-    // Verify the contract
-    await pact.verify();
-  });
-
-  afterAll(async () => {
-    // Create the contract and kill the mock server
-    await pact.finalize();
-
-    // Publish the contract to broker
-    // const opts: PublisherOptions = {
-    //   pactFilesOrDirs: [path.resolve(process.cwd(), '../', 'contracts')],
-    //   pactBroker: 'https://amalsplayground.pact.dius.com.au/',
-    //   pactBrokerToken: 'D5hU6icvO51WtY1jP9cKAw',
-    //   consumerVersion: '1.0.2',
-    //   tags: ['development'],
-    // };
-    // await new Publisher(opts).publishPacts();
-  });
-
-  // Test the contract
-  it('returns 200', async () => {
-    await new Promise(r => setTimeout(r, 10000));
+    // Test against mock provider
     const result = await movies.getMovies();
     expect(result.status).toEqual(200);
     expect(result.data[0].id).toBe(1);
     expect(result.data[0].name).toBe('foo bar');
     expect(result.data[0].year).toBe(1989);
+  });
+
+  it('should return a movie', async () => {
+    // Define expected provider interaction
+    const interaction = new Interaction()
+      .given('movie with id 2 exist')
+      .uponReceiving('a request to return movie with id 2')
+      .withRequest({
+        method: 'GET',
+        path: '/movie/2',
+      })
+      .willRespondWith({
+        status: 200,
+        body: like({
+          id: 2,
+          name: 'Titanic',
+          year: 1995,
+        }),
+      });
+    await provider.addInteraction(interaction);
+
+    // Test against mock provider
+    const result = await movies.getMovieById(2);
+    expect(result.status).toEqual(200);
+    expect(result.data.id).toBe(2);
+    expect(result.data.name).toBe('Titanic');
+    expect(result.data.year).toBe(1995);
+  });
+
+  it('should return error when id does not exist', async () => {
+    // Define expected provider interaction
+    const interaction = new Interaction()
+      .given('movie with id 999 does not exist')
+      .uponReceiving('a request to return movie with id 999')
+      .withRequest({
+        method: 'GET',
+        path: '/movie/999',
+      })
+      .willRespondWith({
+        status: 404,
+      });
+    await provider.addInteraction(interaction);
+
+    // Test against mock provider
+    await expect(movies.getMovieById(999)).rejects.toThrow('Request failed with status code 404');
   });
 });

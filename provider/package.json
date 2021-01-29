@@ -7,7 +7,8 @@
     "watch-ts": "tsc -w",
     "watch-node": "nodemon dist/server.js",
     "start": "nodemon",
-    "test": "jest"
+    "test": "jest",
+    "can-i-deploy": "docker run --rm pactfoundation/pact-cli broker can-i-deploy --pacticipant \"Movie Provider\" --latest --broker-base-url http://host.docker.internal:9292"
   },
   "author": "amal jayaraj",
   "license": "ISC",
@@ -20,6 +21,7 @@
     "@pact-foundation/pact": "^9.12.2",
     "@types/express": "^4.17.8",
     "express": "^4.17.1",
+    "http-status-codes": "^2.1.4",
     "nock": "^13.0.6",
     "node-gyp": "^7.1.2",
     "nodemon": "^2.0.7",

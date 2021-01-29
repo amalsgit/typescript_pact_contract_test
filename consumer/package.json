@@ -4,20 +4,14 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "watch-ts": "tsc -w",
-    "watch-node": "nodemon dist/server.js",
-    "watch": "concurrently -k -p \"[{name}]\" -n \"TypeScript, Node\" -c \"yello.bold, cyan.bold\" \"yarn run watch-ts\" \"yarn run watch-node\"",
-    "test": "jest"
+    "test": "jest",
+    "can-i-deploy": "docker run --rm pactfoundation/pact-cli broker can-i-deploy --pacticipant \"Movie Consumer\" --latest --broker-base-url http://host.docker.internal:9292"
   },
   "author": "amal jayaraj",
   "license": "ISC",
   "dependencies": {
     "@pact-foundation/pact": "^9.12.2",
-    "@types/express": "^4.17.8",
     "axios": "^0.20.0",
-    "concurrently": "^5.3.0",
-    "express": "^4.17.1",
-    "nodemon": "^2.0.4",
     "typescript": "^4.0.3"
   },
   "devDependencies": {
