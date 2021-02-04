@@ -1,8 +1,7 @@
 import { Verifier, VerifierOptions } from '@pact-foundation/pact';
 import path from 'path';
 
-describe('Verify Movies Consumer', () => {
-  jest.setTimeout(10000);
+describe('Verify Movies Consumer Contract', () => {
   it('should validate consumer expectation', () => {
     // Define contract tests configs
     const opts: VerifierOptions = {
@@ -11,7 +10,7 @@ describe('Verify Movies Consumer', () => {
       provider: 'Movie Provider',
       providerVersion: '1.0.0',
       providerBaseUrl: 'http://localhost:3001',
-      pactUrls: [path.resolve(process.cwd(), '../', 'contracts', 'movie_consumer-movie_producer.json')],
+      pactUrls: [path.resolve(process.cwd(), '../', 'contracts', 'movie_consumer-movie_provider.json')],
       pactBrokerUrl: 'http://localhost:9292/',
       publishVerificationResult: true,
     };

@@ -5,8 +5,6 @@ import { TvSeries } from '../src/entity/tvSeries.entity';
 
 describe('Verify Movies Consumer', () => {
   it('should validate consumer expectation', async () => {
-    jest.setTimeout(10000);
-
     const opts: VerifierOptions = {
       provider: 'Series Provider',
       providerVersion: '1.0.0',

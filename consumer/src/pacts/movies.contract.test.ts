@@ -14,7 +14,7 @@ const provider = new Pact({
   logLevel: 'info',
 });
 
-describe('Movie Service Provider', () => {
+describe('Movie Service Provider Contract', () => {
   beforeAll(async () => {
     // Bring up provider mock server
     await provider.setup();

@@ -40,10 +40,10 @@ describe('Series Service Provider', () => {
   });
 
   // Test the contract
-  it('returns 200', async () => {
+  it('should return list of tv series', async () => {
     // Define expected provider interaction
     const interaction = new Interaction()
-      .given('I have a list of tv series')
+      .given('a list of tv series')
       .uponReceiving('a request for returning all series')
       .withRequest({
         method: 'GET',
