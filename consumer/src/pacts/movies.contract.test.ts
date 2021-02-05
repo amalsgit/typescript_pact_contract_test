@@ -70,28 +70,28 @@ describe('Movie Service Provider Contract', () => {
   it('should return a movie', async () => {
     // Define expected provider interaction
     const interaction = new Interaction()
-      .given('movie with id 2 exist')
-      .uponReceiving('a request to return movie with id 2')
+      .given('movie with id 15 exist')
+      .uponReceiving('a request to return movie with id 15')
       .withRequest({
         method: 'GET',
-        path: '/movie/2',
+        path: '/movie/15',
       })
       .willRespondWith({
         status: 200,
         body: like({
-          id: 2,
+          id: 15,
           name: 'Titanic',
-          year: 1995,
+          year: 1997,
         }),
       });
     await provider.addInteraction(interaction);
 
     // Test against mock provider
-    const result = await movies.getMovieById(2);
+    const result = await movies.getMovieById(15);
     expect(result.status).toEqual(200);
-    expect(result.data.id).toBe(2);
+    expect(result.data.id).toBe(15);
     expect(result.data.name).toBe('Titanic');
-    expect(result.data.year).toBe(1995);
+    expect(result.data.year).toBe(1997);
   });
 
   it('should return error when id does not exist', async () => {

@@ -10,7 +10,7 @@ describe('Verify Movies Consumer Contract', () => {
       provider: 'Movie Provider',
       providerVersion: '1.0.0',
       providerBaseUrl: 'http://localhost:3001',
-      pactUrls: [path.resolve(process.cwd(), '../', 'contracts', 'movie_consumer-movie_provider.json')],
+      // pactUrls: [path.resolve(process.cwd(), '../', 'contracts', 'movie_consumer-movie_provider.json')],
       pactBrokerUrl: 'http://localhost:9292/',
       publishVerificationResult: true,
     };
